@@ -1,0 +1,18 @@
+# Material file for wooden_nightstand_asset
+# Material Count: 1
+
+newmtl wood_body_primary
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd textures/wooden_nightstand_asset_basecolor.jpg
+map_Ks textures/wooden_nightstand_asset_specular.jpg
+map_Ns textures/wooden_nightstand_asset_glossiness.png
+map_bump textures/wooden_nightstand_asset_normal.jpg
+disp textures/wooden_nightstand_asset_displacement.jpg
+map_Ka textures/wooden_nightstand_asset_ao.jpg
