@@ -1,50 +1,83 @@
 using UnityEngine;
-using UnityEngine.UI; 
-using TMPro; 
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInteractor : MonoBehaviour
 {
     public float interactionDistance = 3f;
-    
+    public float holdDistance = 1.5f;
+
     [Header("UI Elements")]
     public Image crosshair;
     public TextMeshProUGUI promptText;
 
+    private Pickupable held;
+    private Transform holdPoint;
+
     void Start()
     {
-        // Hides the text prompt when the game first starts
         if (promptText != null) promptText.gameObject.SetActive(false);
+
+        // Empty child of the camera where carried objects sit
+        holdPoint = new GameObject("HoldPoint").transform;
+        holdPoint.SetParent(transform);
+        holdPoint.localPosition = Vector3.forward * holdDistance;
+        holdPoint.localRotation = Quaternion.identity;
     }
 
     void Update()
     {
-        // 1. Reset UI to default every frame
+        // Reset UI every frame
         if (crosshair != null) crosshair.color = Color.white;
         if (promptText != null) promptText.gameObject.SetActive(false);
 
-        // 2. Shoot the Raycast
-        Ray ray = new Ray(transform.position, transform.forward);
-        
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
+        // Carrying something: click to drop
+        if (held != null)
         {
-            Interactable interactableTarget = hit.collider.GetComponent<Interactable>();
-            
-            if (interactableTarget != null)
-            {
-                // 3. We are looking at a target! Change UI to active state.
-                if (crosshair != null) crosshair.color = Color.red;
-                if (promptText != null) 
-                {
-                    promptText.text = "[E] Inspect";
-                    promptText.gameObject.SetActive(true);
-                }
+            ShowPrompt("[Left Click] Drop");
+            if (Input.GetMouseButtonDown(0)) Drop();
+            return;
+        }
 
-                // 4. Trigger the event if 'E' is pressed
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    interactableTarget.TriggerInteraction();
-                }
-            }
+        // Look for something to interact with (trigger volumes are ignored so they can't block the ray)
+        Ray ray = new Ray(transform.position, transform.forward);
+        if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance,
+                             Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            return;
+
+        Interactable interactable = hit.collider.GetComponentInParent<Interactable>();
+        Pickupable pickupable = hit.collider.GetComponentInParent<Pickupable>();
+
+        if (interactable != null)
+        {
+            ShowPrompt(pickupable != null ? "[E] Inspect   [Left Click] Pick up" : "[E] Inspect");
+            if (Input.GetKeyDown(KeyCode.E)) interactable.TriggerInteraction();
+        }
+        else if (pickupable != null)
+        {
+            ShowPrompt("[Left Click] Pick up");
+        }
+
+        if (pickupable != null && Input.GetMouseButtonDown(0))
+        {
+            held = pickupable;
+            held.PickUp(holdPoint);
+        }
+    }
+
+    void Drop()
+    {
+        held.Drop();
+        held = null;
+    }
+
+    void ShowPrompt(string message)
+    {
+        if (crosshair != null) crosshair.color = Color.red;
+        if (promptText != null)
+        {
+            promptText.text = message;
+            promptText.gameObject.SetActive(true);
         }
     }
 }
