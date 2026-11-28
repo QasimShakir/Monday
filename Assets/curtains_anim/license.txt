@@ -1,0 +1,11 @@
+Model Information:
+* title:	Curtains_anim
+* source:	https://sketchfab.com/3d-models/curtains-anim-8fa6c0e7716a4c20b669e121e87f6aab
+* author:	DonikXD (https://sketchfab.com/DonikXD)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Curtains_anim" (https://sketchfab.com/3d-models/curtains-anim-8fa6c0e7716a4c20b669e121e87f6aab) by DonikXD (https://sketchfab.com/DonikXD) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

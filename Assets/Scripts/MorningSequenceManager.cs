@@ -16,7 +16,8 @@ public class MorningSequenceManager : MonoBehaviour
     public Transform playerBody;
     public Transform bedPosition;
     public Transform standingPosition;
-    public MonoBehaviour playerMovementScript;
+    [Tooltip("Left empty, it is found automatically on playerBody.")]
+    public FirstPersonController playerController;
 
     [Header("Blinking Settings")]
     public float blinkSpeed = 0.5f;
@@ -34,6 +35,8 @@ public class MorningSequenceManager : MonoBehaviour
 
     void Start()
     {
+        AnalyticsManager.BeginPlaythrough();
+
         // Cache the DoF override once
         if (globalVolume == null)
         {
@@ -44,9 +47,12 @@ public class MorningSequenceManager : MonoBehaviour
             Debug.LogWarning("[Morning] No DepthOfField override found on the Volume profile.");
         }
 
-        // Snap player to bed and lock movement
+        // Snap player to bed and lock movement until the alarm is turned off
+        if (playerController == null) playerController = playerBody.GetComponentInChildren<FirstPersonController>();
+        if (playerController == null) Debug.LogError("[Morning] No FirstPersonController found on playerBody!");
+        else playerController.enabled = false;
+
         playerBody.position = bedPosition.position;
-        if (playerMovementScript != null) playerMovementScript.enabled = false;
 
         // Force eyelids completely shut (100% black screen)
         topLid.localScale = Vector3.one;
@@ -81,6 +87,7 @@ public class MorningSequenceManager : MonoBehaviour
         isWakingUp = true;
         canBlink = false;
         alarmClockAudio.Stop();
+        AnalyticsManager.CompleteTask(AnalyticsManager.AlarmTask);
 
         StartCoroutine(WakeUpSequenceRoutine());
     }
@@ -141,7 +148,7 @@ public class MorningSequenceManager : MonoBehaviour
         topLid.gameObject.SetActive(false);
         bottomLid.gameObject.SetActive(false);
 
-        if (playerMovementScript != null) playerMovementScript.enabled = true;
+        if (playerController != null) playerController.enabled = true;
 
         // Safety net: re-apply in case another script re-enabled DoF this frame
         KillBlur();

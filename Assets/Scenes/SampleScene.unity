@@ -1540,8 +1540,9 @@ MonoBehaviour:
   brush: {fileID: 1062605410}
   cleanlinessText: {fileID: 411062380}
   cleanlinessBar: {fileID: 1925257293}
+  feedbackText: {fileID: 0}
   hint: {fileID: 0}
-  playerController: {fileID: 834026808}
+  playerController: {fileID: 0}
   playerInteractor: {fileID: 834026803}
   columns: 8
   rows: 4
@@ -1549,7 +1550,28 @@ MonoBehaviour:
   maxAlpha: 0.85
   brushRadius: 80
   cleanPerUnit: 0.004
-  exitThreshold: 90
+  finishDelay: 0.8
+  minStroke: 25
+  comboWindow: 0.5
+  maxCombo: 4
+  comboBonus: 0.5
+  maxSafeSpeed: 3000
+  painPerSecond: 1.5
+  painRecovery: 0.6
+  winceTime: 1.2
+  hardBrushColor: {r: 1, g: 0.35, b: 0.35, a: 1}
+  tartarChance: 0.15
+  tartarToughness: 3
+  tartarColor: {r: 0.45, g: 0.3, b: 0.1, a: 1}
+  germSprite: {fileID: 0}
+  germColor: {r: 0.45, g: 0.85, b: 0.3, a: 1}
+  germCount: 3
+  extraGermsAt: 60
+  extraGermCount: 2
+  germSize: 40
+  germSpeed: 120
+  spreadInterval: 1.5
+  spreadAmount: 0.3
 --- !u!4 &523855569
 Transform:
   m_ObjectHideFlags: 0
@@ -6197,7 +6219,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1357018027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6675,7 +6697,7 @@ MonoBehaviour:
   playerBody: {fileID: 834026807}
   bedPosition: {fileID: 116203662}
   standingPosition: {fileID: 262760592}
-  playerMovementScript: {fileID: 834026803}
+  playerController: {fileID: 0}
   blinkSpeed: 0.5
   blinkOpenScale: 1.2
   initialBlackoutTime: 2
