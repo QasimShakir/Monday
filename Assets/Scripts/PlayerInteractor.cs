@@ -27,9 +27,17 @@ public class PlayerInteractor : MonoBehaviour
 
     void Update()
     {
+        bool blocked = TaskListPopup.Instance != null && TaskListPopup.Instance.IsOpen;
+
         // Reset UI every frame
-        if (crosshair != null) crosshair.color = Color.white;
+        if (crosshair != null)
+        {
+            crosshair.enabled = !blocked;   // hide crosshair while the note is open
+            crosshair.color = Color.white;
+        }
         if (promptText != null) promptText.gameObject.SetActive(false);
+
+        if (blocked) return;
 
         // Carrying something: click to drop
         if (held != null)

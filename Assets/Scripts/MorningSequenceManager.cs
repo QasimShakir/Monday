@@ -150,6 +150,9 @@ public class MorningSequenceManager : MonoBehaviour
 
         if (playerController != null) playerController.enabled = true;
 
+        // Player is free to move now: start the task list tutorial
+        if (TutorialManager.Instance != null) TutorialManager.Instance.BeginAfterMorningRoutine();
+
         // Safety net: re-apply in case another script re-enabled DoF this frame
         KillBlur();
         yield return new WaitForEndOfFrame();
